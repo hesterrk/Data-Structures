@@ -158,13 +158,15 @@ class DoublyLinkedList:
         if node is self.head:
             return
 
+        # storing the node value, the node we select to add to head
         value = node.value
 
         if node is self.tail:
+            # this method remove_from_tail already deletes the tail node
             self.remove_from_tail()
         else:
             node.delete()
-            # to shift all the other nodes down 
+            # to shift all the other nodes down (thats why we dont need to do it with removing tail node!) 
             self.length -= 1
 
         self.add_to_head(value)
@@ -207,7 +209,7 @@ class DoublyLinkedList:
         if self.head == self.tail:
             # setting them to none as there's no element to point to
             # as soon as it points to one its LL becomes 0 even though is an element but the node but doesnt point to anything
-            # !!!!!!!!!!!! THE LENGTH OF THE LL IS DEFIBED BY THE NUNBER OF NEXT AND PREV NODES IT POINTS TO NOT THE LENGTH OF THE NODES !!!!!!!!!!!!
+            # !!!!!!!!!!!! THE LENGTH OF THE LL IS DEFINED BY THE NUNBER OF NEXT AND PREV NODES IT POINTS TO NOT THE LENGTH OF THE NODES !!!!!!!!!!!!
             self.head = None
             self.tail = None
 

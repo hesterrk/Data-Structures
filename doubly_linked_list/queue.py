@@ -9,12 +9,21 @@ return elements in First In First Out order.
    Make sure the Queue tests pass.
 3. What is the difference between using an array vs. a linked list when 
    implementing a Queue?
-   
-ARRAY -->  To add an value, we add it to the tail and increase the tail by one to point to the next element of the array. If the tail is  the last element of the queue and there are empty blocks before head, the tail will point to the first element of the array and will follow a circular order. If the head of a queue is one more than the tail, the queue is full. To dequeue, we will first store the item which we are going to delete from the queue in a variable because we will be returning it at last. Now, we just have to increase the head pointer by 1. And in the case when the head is at the last element of the array, it will go 1.
 
 
+ARRAY --> All array operations are index based which makes it faster for all operations except removing an element because deletion requires shifting of all the remaining elements to the front by one position. To push an element to the end of the queue we incremement the end of the queue (end of the array) by one space with the new value.
+To dequeue we remove an element from the front of the queue (start of the array). To do this we incremenet from the front of the array(i++), this incremenention automatically discards the element at the start of the queue (not part of queue anymore). (Before we can access and store store this item which we are going to delete from the queue in a variable). 
+If we reach maximum array space in memory: we cannot enqueue an element anymore because we cannot incremenet the end of the queue. As we have been dequeue (removing elements from front of queue) it leaves empty space which we can use. This concept is a circular array -- the last item in array is (index = n - 1 --> where n is number of elements in array), to get its next position it's equalled to N % N = 0 (index 0). This means we can incremenent the end of the queue in this interpretation as long as there are empty blocks in memory before the start of array/queue. When the queue is full the next element after the end is the front. (No unused memory cell)
+https://www.geeksforgeeks.org/circular-array/
+If array gets too full, can either forbit any new elements getting added to queue or create a new bigger space in memory for whole copied array with new elements. The time taken is proportional to number of elements in the array.
+Another issue with array implementation comapred to a LL is that the queue may be taking up small space within the allocated memory given to the array = unused memory.
 
-LINKEDLIST --> We can change the size of it whenever it is needed. Thus the queue will not overflow and we dont need to worry about working out its capacity. If the queue is empty, we will simply make the new node head and tail of the queue. To dequeue, we need to remove the head of the linked list. 
+
+LINKEDLIST --> Easy to enforce FIFO order. Nodes are stored in random places in memory so we can easily change the size of it whenever it is needed. Thus the queue will not overflow and we dont need to worry about working out its capacity. 
+Can pick either way (whether head is enqueue or dequeue and vice versa). Depending on how we pick the sides, one will always be 0(1) (case1-enqueue add to head case2-dequeue remove from head) and the other will be 0(n) (case1- remove from tail. case2-enqueue add to tail)
+Enqueue (adds node to the back of the queue): create new node, set its next to None as its the last node in the queue change the old tail's reference to refernence our new node. (in DLL) We just have to modify next and prev references so time taken will not depend on number of nodes in DLL. 
+
+
 
 
 
@@ -40,7 +49,7 @@ from doubly_linked_list import DoublyLinkedList
 #         self.size += 1
 
 #     def dequeue(self):
-#         # removes and returns the element at the front of the queue (index 0)
+#         # removes and returns the element at the front of the queue (index 0 first item)
 #         if self.size == 0:
 #             return
 #         else:
@@ -56,7 +65,7 @@ class Queue:
         self.storage = DoublyLinkedList()
 
     def __len__(self):
-        return self.storage.length
+        return self.size
 
     def enqueue(self, value):
         # adds value to end
